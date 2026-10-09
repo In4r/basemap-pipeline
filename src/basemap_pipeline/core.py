@@ -65,6 +65,7 @@ def generate_basemap(bbox: tuple[float, float, float, float] | BBox) -> BasemapR
 
     # TODO: implement the actual pipeline, e.g.:
     #   1. Fetch source imagery/vector data covering `bbox`
+    #      (see scripts/naip_fetch.py for an evaluation of NAIP as a source)
     #   2. Reproject / mosaic / clip to `bbox`
     #   3. Render or tile the result
     #   4. Write output and return its location + metadata

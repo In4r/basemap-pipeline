@@ -10,8 +10,10 @@ the actual generation logic in `generate_basemap` is a stub.
 basemap-pipeline/
 ├── src/basemap_pipeline/
 │   ├── __init__.py       # package exports
-│   ├── core.py            # BBox type + generate_basemap() stub
-│   └── cli.py              # `generate-basemap` CLI entrypoint
+│   ├── core.py             # BBox type + generate_basemap() stub
+│   └── cli.py               # `generate-basemap` CLI entrypoint
+├── scripts/                  # exploratory/one-off scripts, not part of the package
+│   └── naip_fetch.py
 ├── tests/
 │   └── test_core.py
 ├── Dockerfile
@@ -56,3 +58,6 @@ docker run --rm basemap-pipeline -122.5 37.7 -122.3 37.9
 - Add geospatial dependencies (e.g. `rasterio`, `shapely`, `geopandas`)
   to `pyproject.toml` and system deps (`gdal-bin`) to the `Dockerfile`.
 - Expand `BasemapResult` to reflect the real output shape.
+- Once an imagery source is confirmed (see `scripts/naip_fetch.py`),
+  move the fetch logic into `src/basemap_pipeline/sources/` and wire it
+  into `generate_basemap()`.
