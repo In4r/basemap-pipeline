@@ -1,6 +1,12 @@
 """
 Fetch NAIP imagery for a bounding box.
 
+Exploratory script for evaluating NAIP as an imagery source (see the
+geospatial team's imagery-source-selection ticket). Not wired into the
+basemap_pipeline package yet -- once a source is confirmed, this logic
+should move to src/basemap_pipeline/sources/naip.py and be called from
+generate_basemap() in core.py.
+
 Two approaches, both free and keyless (NAIP is U.S. public domain):
 
 1. fetch_naip_exportimage() -- USGS ImageServer, good for quick single-tile
@@ -11,7 +17,7 @@ Two approaches, both free and keyless (NAIP is U.S. public domain):
    production use. Returns a list of cloud-optimized GeoTIFF (COG) scene
    URLs covering your bbox, which GDAL/Rasterio can read directly (even
    partially, without downloading the whole file) -- this is the shape
-   Sriya's fetch/stitch pipeline will eventually want.
+   the fetch/stitch pipeline will eventually want.
 
 Usage:
     python naip_fetch.py
@@ -145,4 +151,4 @@ if __name__ == "__main__":
     #       data = src.read(window=window)
     #
     # This only pulls the bytes covering your bbox, not the full scene --
-    # relevant for Sriya's fetch/stitch ticket once this moves past testing.
+    # relevant for the fetch/stitch pipeline once this moves past testing.
