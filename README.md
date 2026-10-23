@@ -13,7 +13,14 @@ basemap-pipeline/
 │   ├── core.py             # BBox type + generate_basemap() stub
 │   └── cli.py               # `generate-basemap` CLI entrypoint
 ├── scripts/                  # exploratory/one-off scripts, not part of the package
-│   └── naip_fetch.py
+│   ├── naip_fetch.py
+│   ├── noaa_fetch.py
+│   └── storage_smoke_test.sh
+├── data/                     # imagery + annotations, versioned with DVC (see docs/storage.md)
+├── models/                   # checkpoints, versioned with DVC
+├── docs/
+│   └── storage.md            # how to push/pull versioned imagery and artifacts
+├── .dvc/                     # DVC config (remote = R2/S3 bucket)
 ├── tests/
 │   └── test_core.py
 ├── Dockerfile
@@ -42,6 +49,16 @@ Or via CLI:
 
 ```bash
 generate-basemap -122.5 37.7 -122.3 37.9
+```
+
+## Data and model storage
+
+Imagery, annotations and model checkpoints are versioned with DVC and stored in
+a bucket. Start with [docs/storage.md](docs/storage.md).
+
+```bash
+pip install -e ".[storage]"
+dvc pull
 ```
 
 ## Docker

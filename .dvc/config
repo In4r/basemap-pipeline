@@ -1,0 +1,5 @@
+[core]
+    remote = storage
+['remote "storage"']
+    url = s3://REPLACE-WITH-BUCKET/dvc
+    endpointurl = https://REPLACE-WITH-ACCOUNT-ID.r2.cloudflarestorage.com

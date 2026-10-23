@@ -9,3 +9,5 @@ dist/
 build/
 .env
 scripts/*.tif
+.DS_Store
+/*.tif
