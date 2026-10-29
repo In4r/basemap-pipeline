@@ -10,10 +10,12 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = [
-    # Add real deps as the pipeline is implemented, e.g.:
+    "jsonschema>=4.18",
+    "numpy>=1.26",
+    "pyproj>=3.6",
+    # Add more as the pipeline is implemented, e.g.:
     # "rasterio>=1.3",
     # "shapely>=2.0",
-    # "geopandas>=0.14",
 ]
 
 [project.optional-dependencies]
@@ -28,9 +30,17 @@ storage = [
 
 [project.scripts]
 generate-basemap = "basemap_pipeline.cli:main"
+validate-geometry = "basemap_pipeline.validate:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+basemap_pipeline = ["schema/*.json"]
+
+[[tool.mypy.overrides]]
+module = ["jsonschema", "jsonschema.*", "pyproj", "pyproj.*"]
+ignore_missing_imports = true
 
 [tool.ruff]
 line-length = 100

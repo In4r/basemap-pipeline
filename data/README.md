@@ -10,6 +10,7 @@ Create these folders when you first have something to put in them, then run
 raw/<source>/<year>/   source tiles, e.g. raw/noaa-dc/2026/ (optional to version)
 chips/                 extracted GeoTIFF chips
 annotations/           label masks, same file names as the chips
+outputs/geometry/      emitted geometry documents (publish with scripts/publish_outputs.sh)
 ```
 
 Only `README.md` and `PROVENANCE.md` are committed to git directly. Do not add

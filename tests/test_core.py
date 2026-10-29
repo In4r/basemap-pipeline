@@ -17,9 +17,9 @@ def test_bbox_validate_bad_latitude():
         BBox(-122.5, 40.0, -122.3, 37.9).validate()
 
 
-def test_generate_basemap_accepts_tuple_and_raises_not_implemented():
+def test_generate_basemap_without_vectors_raises_not_implemented():
     with pytest.raises(NotImplementedError):
-        generate_basemap((-122.5, 37.7, -122.3, 37.9))
+        generate_basemap((-73.07, 40.945, -73.06, 40.953))
 
 
 def test_generate_basemap_rejects_invalid_bbox():

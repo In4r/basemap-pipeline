@@ -2,7 +2,8 @@
 
 Pipeline for generating basemap layers from a bounding box. Currently a
 scaffold: project structure, containerization, and CI are wired up, but
-the actual generation logic in `generate_basemap` is a stub.
+`generate_basemap` emits and validates a geometry document, but the
+imagery -> model -> vectorizer stages are not wired in yet (use `--mock`).
 
 ## Layout
 
@@ -10,11 +11,16 @@ the actual generation logic in `generate_basemap` is a stub.
 basemap-pipeline/
 ├── src/basemap_pipeline/
 │   ├── __init__.py       # package exports
-│   ├── core.py             # BBox type + generate_basemap() stub
+│   ├── core.py             # BBox type + generate_basemap() -> geometry document
+│   ├── geometry_document.py # v0 document builder + confidence
+│   ├── validate.py          # schema validation (`validate-geometry`)
+│   ├── mock_vectors.py      # hand-made vectors until the vectorizer lands
+│   ├── schema/              # geometry_document_v0.schema.json
 │   └── cli.py               # `generate-basemap` CLI entrypoint
 ├── scripts/                  # exploratory/one-off scripts, not part of the package
 │   ├── naip_fetch.py
 │   ├── noaa_fetch.py
+│   ├── publish_outputs.sh
 │   └── storage_smoke_test.sh
 ├── data/                     # imagery + annotations, versioned with DVC (see docs/storage.md)
 ├── models/                   # checkpoints, versioned with DVC
@@ -42,14 +48,18 @@ pytest
 ```python
 from basemap_pipeline import generate_basemap
 
-generate_basemap((-122.5, 37.7, -122.3, 37.9))  # raises NotImplementedError for now
+generate_basemap((-73.070, 40.945, -73.060, 40.953), use_mock=True).document
 ```
 
 Or via CLI:
 
 ```bash
-generate-basemap -122.5 37.7 -122.3 37.9
+generate-basemap --mock --out-dir data/outputs/geometry -73.070 40.945 -73.060 40.953
+validate-geometry data/outputs/geometry/*.json
 ```
+
+See [docs/geometry-document.md](docs/geometry-document.md) for the document format,
+confidence, and how to fetch emitted documents from storage.
 
 ## Data and model storage
 

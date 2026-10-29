@@ -40,12 +40,13 @@ data/
   raw/<source>/<year>/     source tiles, e.g. raw/noaa-dc/2026/  (optional to version)
   chips/                   extracted GeoTIFF chips
   annotations/             label masks, same file names as the chips
+  outputs/geometry/        emitted geometry documents (see docs/geometry-document.md)
   PROVENANCE.md            where each raw pull came from (kept in git)
 models/
   checkpoints/<arch>/<run-id>/   model.pt + metrics.json
 ```
 
-Each of `data/raw`, `data/chips`, `data/annotations` and `models/checkpoints` is
+Each of `data/raw`, `data/chips`, `data/annotations`, `data/outputs` and `models/checkpoints` is
 tracked by DVC as one unit (`dvc add <dir>` creates `<dir>.dvc`). Train/val splits
 and augmented data are **regenerable from the pipeline, so do not version them**
 unless a split is frozen for a reported result.

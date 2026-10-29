@@ -30,6 +30,11 @@ jobs:
       - name: Test (pytest)
         run: pytest -v
 
+      - name: Emit a document and validate it against the v0 schema
+        run: |
+          generate-basemap --mock --out-dir "$RUNNER_TEMP/geom" -73.070 40.945 -73.060 40.953
+          validate-geometry "$RUNNER_TEMP"/geom/*.json
+
   docker:
     runs-on: ubuntu-latest
     needs: test

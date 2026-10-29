@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudtcp.example/schemas/geometry_document_v0.schema.json",
+  "title": "Geometry document v0 (ASSUMED - replace with the team's real v0 spec)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "generated_at", "generator", "bbox", "crs", "confidence_method", "features"],
+  "properties": {
+    "schema_version": {"const": "0"},
+    "run_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "mock"],
+      "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "mock": {"type": "boolean", "description": "true when vectors were hand-made, not model output"}
+      }
+    },
+    "bbox": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["min_lon", "min_lat", "max_lon", "max_lat"],
+      "properties": {
+        "min_lon": {"type": "number", "minimum": -180, "maximum": 180},
+        "min_lat": {"type": "number", "minimum": -90, "maximum": 90},
+        "max_lon": {"type": "number", "minimum": -180, "maximum": 180},
+        "max_lat": {"type": "number", "minimum": -90, "maximum": 90}
+      }
+    },
+    "crs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["epsg", "name", "units"],
+      "properties": {
+        "epsg": {"type": "integer", "minimum": 1},
+        "name": {"type": "string"},
+        "units": {"const": "us-survey-foot"}
+      }
+    },
+    "confidence_method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "min_full_confidence_length_ft"],
+      "properties": {
+        "name": {"const": "mean_probability_x_length_v0"},
+        "min_full_confidence_length_ft": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "features": {"type": "array", "items": {"$ref": "#/$defs/feature"}}
+  },
+  "$defs": {
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "class", "geometry", "length_ft", "confidence"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "class": {"enum": ["lane_line", "crosswalk_edge", "curb", "median"]},
+        "geometry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "coordinates"],
+          "properties": {
+            "type": {"const": "LineString"},
+            "coordinates": {
+              "type": "array",
+              "minItems": 2,
+              "items": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}}
+            }
+          }
+        },
+        "length_ft": {"type": "number", "exclusiveMinimum": 0},
+        "confidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["score", "mean_mask_probability", "length_ft"],
+          "properties": {
+            "score": {"type": "number", "minimum": 0, "maximum": 1},
+            "mean_mask_probability": {"type": "number", "minimum": 0, "maximum": 1},
+            "length_ft": {"type": "number", "exclusiveMinimum": 0}
+          }
+        }
+      }
+    }
+  }
+}
